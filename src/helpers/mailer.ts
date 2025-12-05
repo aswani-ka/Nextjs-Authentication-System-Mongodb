@@ -1,6 +1,8 @@
 import nodemailer, {Transporter} from "nodemailer"
 import User from "@/models/userModel"
 import bcryptjs from "bcryptjs"
+import SMTPTransport from "nodemailer/lib/smtp-transport";
+
 
 if (!process.env.MAILTRAP_SMTP_HOST ||
     !process.env.MAILTRAP_SMTP_PORT ||
@@ -34,15 +36,29 @@ export const sendEmail = async({email, emailType, userId}: any) => {
 
         const smtpPort = parseInt(process.env.MAILTRAP_SMTP_PORT!, 10)
 
-        const transporter: Transporter = nodemailer.createTransport({
-            host: process.env.MAILTRAP_SMTP_HOST!,
+        // const transporter: Transporter = nodemailer.createTransport({
+        //     host: process.env.MAILTRAP_SMTP_HOST,
+        //     port: smtpPort,
+        //     secure: false, 
+        //     auth: {
+        //         user: process.env.MAILTRAP_SMTP_USER,
+        //         pass: process.env.MAILTRAP_SMTP_PASS,
+        //     },
+        // });
+
+
+        const transporter = nodemailer.createTransport(
+        {
+            host: process.env.MAILTRAP_SMTP_HOST,
             port: smtpPort,
-            secure: false, 
+            secure: false,
             auth: {
-                user: process.env.MAILTRAP_SMTP_USER!,
-                pass: process.env.MAILTRAP_SMTP_PASS!,
+            user: process.env.MAILTRAP_SMTP_USER,
+            pass: process.env.MAILTRAP_SMTP_PASS,
             },
-        });
+        } as SMTPTransport.Options
+        );
+
 
         const mailOptions = {
             from: "aswani@gmail.com",
