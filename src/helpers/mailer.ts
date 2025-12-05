@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer"
+import nodemailer, {Transporter} from "nodemailer"
 import User from "@/models/userModel"
 import bcryptjs from "bcryptjs"
 
@@ -27,9 +27,7 @@ export const sendEmail = async({email, emailType, userId}: any) => {
             })
         }
 
-        const nodemailer = require("nodemailer")
-
-        const transporter = nodemailer.createTransport({
+        const transporter: Transporter = nodemailer.createTransport({
             host: process.env.MAILTRAP_SMTP_HOST,
             port: parseInt(process.env.MAILTRAP_SMTP_PORT || "587", 10),
             secure: false, 
