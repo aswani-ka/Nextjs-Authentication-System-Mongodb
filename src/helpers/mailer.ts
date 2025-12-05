@@ -29,7 +29,7 @@ export const sendEmail = async({email, emailType, userId}: any) => {
 
         const transporter = nodemailer.createTransport({
             host: process.env.MAILTRAP_SMTP_HOST,
-            port: process.env.MAILTRAP_SMTP_PORT,
+            port: parseInt(process.env.MAILTRAP_SMTP_PORT || "587", 10),
             secure: false, 
             auth: {
                 user: process.env.MAILTRAP_SMTP_USER,
