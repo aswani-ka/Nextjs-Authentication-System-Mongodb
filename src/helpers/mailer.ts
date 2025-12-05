@@ -1,15 +1,8 @@
-import nodemailer, {Transporter} from "nodemailer"
+import nodemailer from "nodemailer"
 import User from "@/models/userModel"
 import bcryptjs from "bcryptjs"
-import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 
-if (!process.env.MAILTRAP_SMTP_HOST ||
-    !process.env.MAILTRAP_SMTP_PORT ||
-    !process.env.MAILTRAP_SMTP_USER ||
-    !process.env.MAILTRAP_SMTP_PASS) {
-  throw new Error("Missing Mailtrap environment variables");
-}
 
 export const sendEmail = async({email, emailType, userId}: any) => {
     try {
@@ -34,31 +27,15 @@ export const sendEmail = async({email, emailType, userId}: any) => {
             })
         }
 
-        const smtpPort = parseInt(process.env.MAILTRAP_SMTP_PORT!, 10)
-
-        // const transporter: Transporter = nodemailer.createTransport({
-        //     host: process.env.MAILTRAP_SMTP_HOST,
-        //     port: smtpPort,
-        //     secure: false, 
-        //     auth: {
-        //         user: process.env.MAILTRAP_SMTP_USER,
-        //         pass: process.env.MAILTRAP_SMTP_PASS,
-        //     },
-        // });
-
-
-        const transporter = nodemailer.createTransport(
-        {
+        const transporter = nodemailer.createTransport({
             host: process.env.MAILTRAP_SMTP_HOST,
-            port: smtpPort,
-            secure: false,
+            port: parseInt(process.env.MAILTRAP_SMTP_PORT || "587"),
+            secure: false, 
             auth: {
-            user: process.env.MAILTRAP_SMTP_USER,
-            pass: process.env.MAILTRAP_SMTP_PASS,
+                user: process.env.MAILTRAP_SMTP_USER,
+                pass: process.env.MAILTRAP_SMTP_PASS,
             },
-        } as SMTPTransport.Options
-        );
-
+        });
 
         const mailOptions = {
             from: "aswani@gmail.com",
