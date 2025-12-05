@@ -2,7 +2,12 @@ import nodemailer, {Transporter} from "nodemailer"
 import User from "@/models/userModel"
 import bcryptjs from "bcryptjs"
 
-
+if (!process.env.MAILTRAP_SMTP_HOST ||
+    !process.env.MAILTRAP_SMTP_PORT ||
+    !process.env.MAILTRAP_SMTP_USER ||
+    !process.env.MAILTRAP_SMTP_PASS) {
+  throw new Error("Missing Mailtrap environment variables");
+}
 
 export const sendEmail = async({email, emailType, userId}: any) => {
     try {
@@ -27,9 +32,11 @@ export const sendEmail = async({email, emailType, userId}: any) => {
             })
         }
 
+        const smtpPort = parseInt(process.env.MAILTRAP_SMTP_PORT!, 10)
+
         const transporter: Transporter = nodemailer.createTransport({
             host: process.env.MAILTRAP_SMTP_HOST,
-            port: parseInt(process.env.MAILTRAP_SMTP_PORT || "587", 10),
+            port: smtpPort,
             secure: false, 
             auth: {
                 user: process.env.MAILTRAP_SMTP_USER,
