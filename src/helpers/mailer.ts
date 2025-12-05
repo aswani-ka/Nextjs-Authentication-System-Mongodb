@@ -27,6 +27,8 @@ export const sendEmail = async({email, emailType, userId}: any) => {
             })
         }
 
+        const nodemailer = require("nodemailer")
+
         const transporter = nodemailer.createTransport({
             host: process.env.MAILTRAP_SMTP_HOST,
             port: parseInt(process.env.MAILTRAP_SMTP_PORT || "587", 10),
